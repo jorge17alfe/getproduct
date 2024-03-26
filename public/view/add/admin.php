@@ -83,27 +83,31 @@
         }
         GetAmazonIds();
 
-        $(document).on("click", ".delete-trash", (e) => {
-            e.preventDefault();
-          
+        $(document).on("click",".trash-amazonid",() => {
+            deleteRow("delete-amazonid", "delete_data_amazon_id", ".delete-item-amazonid")
+        })
 
-            if (confirm("Are you sure you want to delete it?")) {
-                const id = $(e.target).attr("delete-trash");
+        const deleteRow = ( getData, action, deleteItem)=>{
+           if (confirm("Are you sure you want to delete it?")) {
+                const getid = $(document)[0].activeElement;
+                
+                id = $(getid).attr(getData);
+               
                 $.post({
                     url,
                     data: {
-                        action: "delete_data_amazon_id",
+                        action: action,
                         nonce: PetitionAjax.security,
                         data: id
                     }
-                }).done(response => {
-                    response = response.substring(0, response.length - 1);
+                }).done((response) => {
+                    // response = response.substring(0, response.length - 1);
                     // console.log(response)
-                    $(".delete-row"+id).remove();
+                    $(deleteItem+id).hide("slow");
+                    setTimeout(()=>$(deleteItem+id).remove(), 500)
                 })
             }
-
-        })
+    }
         
     })
     
@@ -125,15 +129,18 @@
     function addelement(disabled , id = '', value = "",  ) {
         var add ='';
         if(id.length  > 0 ) add = `<${id}>`
-        let result = `<div class='input-group input-group-sm  mb-1 delete-row${id}'  >`;
+        let result = `<div class='input-group input-group-sm  mb-1 delete-item-amazonid${id}'  >`;
         
         result += `<span class='input-group-text'>Amazon ID ${add}</span>`;
         result += `<input ${disabled} type='text' class='form-control form-control-sm' placeholder='Your id amazon' id='${id}' name='amazonid[${id}]' value='${value}'  aria-label='Sizing example input' aria-describedby='inputGroup-sizing-sm'>`;
         result += `<a href="javascript:void(0)" onclick='update(${id})' class="btn btn-outline-success lock-unlock${id}"><i class="bi bi-lock"></i></a>`;
-        result += `<button  class="btn btn-outline-danger"><i class="bi bi-trash delete-trash" delete-trash='${id}'></i></button>`;
+        result += `<a href="javascript:void(0)" class="btn btn-outline-danger trash-amazonid" delete-amazonid='${id}'><i class="bi bi-trash " ></i></a>`;
       
         result += `</div>`;
         return result;
 
     }
+
+
+   
 </script>

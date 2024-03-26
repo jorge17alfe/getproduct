@@ -26,12 +26,12 @@
                 $result[$k]["product"] = unserialize($result[$k]["product"]);
                 
                 ?>
-                <tr>
+                <tr class="delete-item-product<?= $result[$k]["id"] ?>">
                     <th><?= $result[$k]["id"] ?></th>
                     <td><?= $result[$k]["title"] ?></td>
                     <td><?= $result[$k]["product"]["product"]["asin"] ?></td>
-                    <td class="btn btn-outline-danger"> Delete</td>
-                    <td class="btn btn-outline-success"> Update</td>
+                    <td class="btn btn-outline-danger delete-item-product" delete-product="<?= $result[$k]["id"] ?>"> Delete</td>
+                    <td class="btn btn-outline-success "> Update</td>
                 </tr>
 
             <?php } ?>
@@ -47,3 +47,14 @@
         </p>
     </div>
 </div>
+
+
+<script>
+
+    jQuery(document).ready(($)=>{
+
+        $(document).on("click",".trash-product-amazon",() => {
+            deleteRow("delete-product", "delete_data_product_id", ".delete-item-product")
+        })
+    })
+</script>
