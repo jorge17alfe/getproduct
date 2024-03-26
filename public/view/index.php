@@ -63,7 +63,7 @@
 
     showPage2()
 
-    function showPage2(e = "alocraise1") {
+    function showPage2(e = "alocraise4") {
 
         for (let k in pages) {
             if (k == e) {

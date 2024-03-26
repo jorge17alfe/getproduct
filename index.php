@@ -59,7 +59,7 @@ function GpRegisterJsGeneratePage($hook)
     if ($hook != GPURLPLUGIN) {
         return;
     }
-    wp_enqueue_script('JsExternal', plugins_url('public/assets/js/index.js', __FILE__), array('jquery'), '1.0', true);
+    wp_enqueue_script('JsExternal', plugins_url('public/assets/js/index.js', __FILE__), array('jquery'));
     wp_localize_script('JsExternal', 'PetitionAjax', [
         'url' => admin_url('admin-ajax.php'),
         'security' => wp_create_nonce('seg')
@@ -69,7 +69,7 @@ add_action('admin_enqueue_scripts', 'GpRegisterJsGeneratePage');
 
 
 
-// // savedata 
+//  data  AMAZONIDS
 
 function GpgetAmazonIds()
 {
@@ -100,6 +100,20 @@ function GpSaveAmazonId()
 add_action('wp_ajax_nopriv_save_data_amazon_id', 'GpSaveAmazonId');
 add_action('wp_ajax_save_data_amazon_id', 'GpSaveAmazonId');
 
+
+
+// data PRODUCTS
+
+
+function GpgetProducts()
+{
+    global $adminController;
+    echo $adminController->GpgetProducts();
+}
+
+add_action('wp_ajax_nopriv_get_data_products', 'GpGetProducts');
+add_action('wp_ajax_get_data_products', 'GpGetProducts');
+
 function SaveCreateAmazonProduct()
 {
 
@@ -112,8 +126,18 @@ add_action('wp_ajax_nopriv_save_create_amazon_product', 'SaveCreateAmazonProduct
 add_action('wp_ajax_save_create_amazon_product', 'SaveCreateAmazonProduct');
 
 
+function GpDeleteProduct(){
+    global $adminController;
+    echo $adminController->DeleteDataProduct();
+}
+
+add_action('wp_ajax_nopriv_delete_data_product_id', 'GpDeleteProduct');
+add_action('wp_ajax_delete_data_product_id', 'GpDeleteProduct');
 
 
+
+
+// data SHORTCODE
 function GpGetShortCode($atts)
 {
     global $adminController ;

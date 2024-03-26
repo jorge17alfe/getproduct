@@ -61,6 +61,7 @@ class GpAdminController
         $result = $wpdb->get_results($query,  ARRAY_A);
         return json_encode($result);
     }
+
     public function DeleteDataAmazonId()
     {
         global $wpdb;
@@ -68,18 +69,60 @@ class GpAdminController
         $result = $wpdb->delete("{$wpdb->prefix}amazonid", ["id" => $id]);
         return  json_encode($result);
     }
+
+    public function GpgetProducts()
+    {
+        global $wpdb;
+        $query = "SELECT * FROM {$wpdb->prefix}getproduct";
+        $result = $wpdb->get_results($query,  ARRAY_A);
+
+        foreach ($result as $k => $v) {
+            $result[$k]["product"] = unserialize($result[$k]["product"]);
+        }
+        return json_encode($result);
+    }
+    public function GpgetProduct()
+    {
+        global $wpdb;
+        $query = "SELECT * FROM {$wpdb->prefix}getproduct";
+        $result = $wpdb->get_results($query,  ARRAY_A);
+
+        foreach ($result as $k => $v) {
+            $result[$k]["product"] = unserialize($result[$k]["product"]);
+        }
+        return json_encode($result);
+    }
+
+    public function DeleteDataProduct()
+    {
+        global $wpdb;
+        $id = intval($_POST["data"]);
+        $result = $wpdb->delete("{$wpdb->prefix}getproduct", ["id" => $id]);
+        return  json_encode($result);
+    }
+
     public function SaveCreateAmazonProduct()
     {
         global $wpdb;
+
+
+
+
         parse_str($_POST["data"], $tr);
         $_POST["data"] = $tr;
         $title = $tr["product"]["title"];
         $re = serialize($_POST["data"]);
         $ins = ["title" => $title, "product" => $re];
 
+        if (!empty($_POST["data"]["id"])) {
+            $wpdb->update("{$wpdb->prefix}getproduct", $ins, ['id' => $_POST["data"]["id"]]);
+            return;
+        }
+
+
         $wpdb->insert("{$wpdb->prefix}getproduct", $ins);
 
-        // return json_encode("ok save...");
+        // return json_encode($_POST["data"]);
         return;
     }
 
@@ -111,7 +154,7 @@ class GpAdminController
                 $active = "";
             };
 
-            $q .= '             <div class="carousel-item '.$active.'">
+            $q .= '             <div class="carousel-item ' . $active . '">
                                     <img height="200" src="' . $view['product']['image'][$k] . '" class="d-block m-auto pt-2" alt="...">
                                     <div class="card-body">
                                         <h5 class="card-title">' . $view['product']['title'] . '</h5> 
