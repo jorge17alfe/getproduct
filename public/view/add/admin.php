@@ -13,7 +13,7 @@
         <input type="hidden" class="form-control form-control-sm" value="<?= get_current_user_id() ?>" id="userId" name="userId" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 
         <div class="d-flex justify-content-center col-12 ">
-            <button class=" btn btn-success" id="addproduct">
+            <button class=" btn btn-success" id="addbtnamazon">
                 Add Amazon ID
             </button>
         </div>
@@ -33,9 +33,9 @@
     let ae = 1;
     jQuery(document).ready(($) => {
         let url = PetitionAjax.url;
-        $("#addproduct").on("click", (e) => {
+        $("#addbtnamazon").on("click", (e) => {
             e.preventDefault();
-            $("#result").append(addelementamazonid(""));
+            $("#result-amazonid").append(addelementamazonid(""));
 
         })
 
