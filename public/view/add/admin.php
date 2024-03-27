@@ -57,7 +57,7 @@
                 // response = JSON.parse(response);
                 // console.log(response)
 
-                $("#result").html('');
+                $("#result-amazonid").html('');
                 GetAmazonIds();
             })
 
