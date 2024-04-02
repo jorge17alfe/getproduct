@@ -1,13 +1,11 @@
 <?php
 /*
-Plugin Name: Get Product
+Plugin Name: Add Product
 Description: This is a Get Product
 Version: 1.00
 */
 
-// require_once "app/controller/generatePageController.php";
 require_once "app/controller/adminController.php";
-// $generatePageController =   new GetProductController;
 $adminController =   new GpAdminController;
 
 if(!defined('GPURLPLUGIN')) define('GPURLPLUGIN', basename(dirname(__FILE__)) . "/public/view/index.php");
@@ -103,12 +101,14 @@ add_action('wp_ajax_save_data_amazon_id', 'GpSaveAmazonId');
 
 
 // data PRODUCTS
+require_once "app/controller/getproductController.php";
+$getProductController =   new GpGetProductController;
 
 
 function GpgetProducts()
 {
-    global $adminController;
-    echo $adminController->GpgetProducts();
+    global $getProductController;
+    echo $getProductController->GpgetProducts();
 }
 
 add_action('wp_ajax_nopriv_get_data_products', 'GpGetProducts');
@@ -117,18 +117,29 @@ add_action('wp_ajax_get_data_products', 'GpGetProducts');
 function SaveCreateAmazonProduct()
 {
 
-    global $adminController ;
-    echo  $adminController->SaveCreateAmazonProduct();
+    global $getProductController ;
+    echo  $getProductController->SaveCreateAmazonProduct();
    
 }
 
 add_action('wp_ajax_nopriv_save_create_amazon_product', 'SaveCreateAmazonProduct');
 add_action('wp_ajax_save_create_amazon_product', 'SaveCreateAmazonProduct');
 
+function SaveCreateAmazonProductAsin()
+{
+
+    global $getProductController ;
+    echo  $getProductController->SaveCreateAmazonProductAsin();
+   
+}
+
+add_action('wp_ajax_nopriv_save_data_create_product_asin', 'SaveCreateAmazonProductAsin');
+add_action('wp_ajax_save_data_create_product_asin', 'SaveCreateAmazonProductAsin');
+
 
 function GpDeleteProduct(){
-    global $adminController;
-    echo $adminController->DeleteDataProduct();
+    global $getProductController;
+    echo $getProductController->DeleteDataProduct();
 }
 
 add_action('wp_ajax_nopriv_delete_data_product_id', 'GpDeleteProduct');
@@ -140,8 +151,8 @@ add_action('wp_ajax_delete_data_product_id', 'GpDeleteProduct');
 // data SHORTCODE
 function GpGetShortCode($atts)
 {
-    global $adminController ;
-    return  $adminController->GpGetShortCode($atts);
+    global $getProductController ;
+    return  $getProductController->GpGetShortCode($atts);
 }
 
 add_shortcode("GETPRODUCT", "GpGetShortCode");

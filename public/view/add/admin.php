@@ -1,13 +1,13 @@
 <div id="alocraise1">
     <div class="py-3">
-        <div class="pb-2">
+     <!--    <div class="pb-2">
             <h1 class="text-center"> <?= get_admin_page_title() ?></h1>
-        </div>
+        </div>-->
         <div class="">
             <h3></h3>
         </div>
 
-    </div>
+    </div> 
 
     <form class=" row g-2  my-3" id="formData" novalidate>
         <input type="hidden" class="form-control form-control-sm" value="<?= get_current_user_id() ?>" id="userId" name="userId" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
@@ -17,20 +17,16 @@
                 Add Amazon ID
             </button>
         </div>
-        <div class="col-10 col-md-6 " id="result-amazonid">
+        <div class="" id="result-amazonid">
 
         </div>
 
-        <div class="d-flex justify-content-center">
-            <button class="btn btn-primary " id="btnSend">
-                Save
-            </button>
-        </div>
+        
+        <?php $compo->buttonSend( "Save" , "btnSend" );  ?>
     </form>
 </div>
 
 <script>
-    let ae = 1;
     jQuery(document).ready(($) => {
         let url = PetitionAjax.url;
         $("#addbtnamazon").on("click", (e) => {
@@ -74,7 +70,7 @@
             }).done(response => {
                 response = response.substring(0, response.length - 1);
                 response = JSON.parse(response);
-                // console.log(response)
+                console.log(response)
                 for (let i = 0; i < response.length; i++) {
                     $("#result-amazonid").append(addelementamazonid("disabled", response[i]["id"], response[i]["amazonid"]));
                 }
@@ -113,8 +109,8 @@
 
         result += `<span class='input-group-text'>Amazon ID ${add}</span>`;
         result += `<input ${disabled} type='text' class='form-control form-control-sm' placeholder='Your id amazon' id='${id}' name='amazonid[${id}]' value='${value}'  aria-label='Sizing example input' aria-describedby='inputGroup-sizing-sm'>`;
-        result += `<a href="javascript:void(0)" onclick='update(${id})' class="btn btn-outline-success ms-1 lock-unlock${id}"><i class="bi bi-lock"></i></a>`;
-        result += `<a href="javascript:void(0)" class="btn btn-outline-danger ms-1 trash-amazonid" delete-amazonid='${id}'><i class="bi bi-trash " ></i></a>`;
+        result += `<a href="javascript:void(0)" onclick='update(${id})' class="btn btn-outline-success ms-1 lock-unlock${id} rounded"><i class="bi bi-lock"></i></a>`;
+        result += `<a href="javascript:void(0)" class="btn btn-outline-danger ms-1 trash-amazonid rounded" delete-amazonid='${id}'><i class="bi bi-trash " ></i></a>`;
 
         result += `</div>`;
         return result;

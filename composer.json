@@ -1,0 +1,8 @@
+{
+    "require": {
+        "fabpot/goutte": "^4.0",
+        "react/http": "^1.8",
+        "react/socket": "^1.12"
+    }
+    
+}

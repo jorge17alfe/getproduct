@@ -1,43 +1,25 @@
 <div id="alocraise2">
     <div class="py-3">
-        <div class="pb-2">
-            <h1 class="text-center"> <?= get_admin_page_title() ?></h1>
-        </div>
         <div class="">
             <h3></h3>
         </div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Create Product for ASIN
+        </button>
     </div>
     <form class=" row g-2  my-3 " id="formCreateProduct" novalidate>
-        <div class="col-12">
-            <div class="input-group input-group-sm ">
-                <span class="input-group-text">ASIN</span>
-                <input type="text" class="form-control form-control-sm" value="" name="product[asin]" id="asin" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" required>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="input-group input-group-sm ">
-                <span class="input-group-text">Title</span>
-                <input type="text" class="form-control form-control-sm" value="" required name="product[title]" id="title" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="input-group input-group-sm ">
-                <span class="input-group-text">Sub-title</span>
-                <input type="text" class="form-control form-control-sm" value="" required name="product[subtitle]" id="subtitle" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="input-group input-group-sm ">
-                <span class="input-group-text">Price</span>
-                <input type="text" class="form-control form-control-sm" value="" required name="product[price]" id="price" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="input-group input-group-sm ">
-                <span class="input-group-text">Link Product</span>
-                <input type="text" class="form-control form-control-sm" value="" required name="product[linkproduct]" id="linkproduct" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            </div>
-        </div>
+        
+        <?php $compo->inputCreate("ASIN", '', "product[asin]", "asin", "");  ?>
+       
+        <?php $compo->inputCreate("Title", '', "product[title]", "title", "");  ?>
+       
+        <?php $compo->inputCreate("Sub", '', "product[subtitle]", "subtitle", "");  ?>
+       
+        <?php $compo->inputCreate("Price", '', "product[price]", "price", "");  ?>
+       
+        <?php $compo->inputCreate("Link Product" , '', "product[linkproduct]", "linkproduct", "");  ?>
+       
         <div class="col-12">
             <div class="input-group input-group-sm ">
                 <span class="input-group-text">Links Images: </span>
@@ -47,30 +29,52 @@
             <div id="addLinkImage" class="ms-4"></div>
         </div>
 
-        <div class="d-flex justify-content-center">
-            <button class="btn btn-primary " id="btnSendProduct">
-                Save
-            </button>
-        </div>
+        <?php $compo->buttonSend("Save", "btnSendProduct");  ?>
+
+
     </form>
 
 
+
+
+
+    <?php
+    include_once "addProductAsin.php";
+    ?>
+
+
+
+
 </div>
+
 <script>
     const addLinkImages = (value = '', i = '') => {
-        append = `<div class="input-group input-group-sm my-1">`;
+        append = `<div class="input-group input-group-sm my-1 remove-item-linkimage${i}">`;
         append += `<span class="input-group-text">Link Image: </span>`;
-        append += `<input type="text" class="form-control form-control-sm" value="${value}" name="product[image][${i}]"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">`;
+        append += `<input type="text" class="form-control form-control-sm" value="${value}" name="product[image][]"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">`;
+        append += `<a href="javascript:void(0)" class="btn  btn-outline-danger btn-trash-linkimage" delete-imageid="${i}"> <i class="bi bi-trash"></a>`;
         append += `</div>`;
         return append;
     }
 
     jQuery(document).ready(($) => {
         $(".add-link-image").on("click", e => {
-            // console.log()
+
             e.preventDefault()
             $("#addLinkImage").append(addLinkImages())
         })
+
+        $(document).on("click", ".btn-trash-linkimage", (e) => {
+            console.log(e.target)
+
+            const getid = $(document)[0].activeElement;
+            id = $(getid).attr("delete-imageid");;
+            $(".remove-item-linkimage" + id).hide("slow");
+            setTimeout(() => $(".remove-item-linkimage" + id).remove(), 500)
+
+        })
+
+        $(".btn-trash-linkimage").click((e) => {})
 
 
         let url = PetitionAjax.url;

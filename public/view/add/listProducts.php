@@ -1,8 +1,8 @@
 <div id="alocraise4">
     <div class="py-3">
-        <div class="pb-2">
+        <!-- <div class="pb-2">
             <h1 class="text-center"> <?= get_admin_page_title() ?></h1>
-        </div>
+        </div> -->
         <div class="">
             <h3></h3>
         </div>
@@ -64,6 +64,8 @@
 
 
         $(document).on("click", ".btn-update-item", () => {
+            $("#addLinkImage").html('')
+
             const getid = $(document)[0].activeElement;
             id = $(getid).attr("update-productid");
             console.log(products[id])
@@ -101,7 +103,6 @@
         result += `<tr class="delete-item-product${response["id"]}">
                     <th>${response["id"]}</th>
                     <td>${response["title"]}</td>
-                    <td>${response["product"]["product"]["asin"] }</td>
                     <td class="p-0 "><a href="javascript:void(0)" class="btn  btn-outline-danger btn-delete-item" delete-productid="${response["id"]}"> <i class="bi bi-trash "></a></td>
                     <td class="p-0 "> <a href="javascript:void(0)" class="btn btn-outline-success btn-update-item" update-productid="${i}"><img width="20" src="<?= plugins_url('../../assets/img/update.png', __FILE__) ?>" alt=""></a></td>
                 </tr>`
