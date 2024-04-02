@@ -34,6 +34,7 @@
 
             $("#btnSendProductAsin").on("click", (e) => {
                 e.preventDefault();
+                $("#result_a").html('');
                 $.ajax({
                     method: "POST",
                     url: PetitionAjax.url,
@@ -46,13 +47,12 @@
                 }).done((response) => {
                     response = response.substring(0, response.length - 1);
                     response = JSON.parse(response);
-                    if (response.content) {
-                        console.log(response)
-                        $("#result_a").html(response.content)
-                    } else {
-                        $("#result_a").html('')
-                        location.reload()
-                    }
+                    
+                    if(response.ok){
+                  
+                    location.reload();
+                   }
+                    $("#result_a").html(response);
                 })
 
             })

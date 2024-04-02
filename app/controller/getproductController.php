@@ -48,8 +48,9 @@ class GpGetProductController
 
     public function SaveCreateAmazonProductAsin()
     {
+        $res = [];
         if (!file_exists(plugin_dir_path(__DIR__)  . "../vendor/autoload.php")) {
-            return json_encode(["content" =>  "eject dependencias [composer install] and will try again."]);
+            return json_encode($res["info"] = "eject dependencias [composer install] and will try again.");
         }
 
         try {
@@ -57,7 +58,6 @@ class GpGetProductController
             $_POST["data"] = $tr;
             $asin = $_POST["data"]["asin"];
 
-            $res = [];
             $res["product"]["id_amazon"] = $this->GpGetAmazonAfiliate();
             $res["product"]['asin'] = $asin;
             $res["product"]['linkproduct'] = $this->getUrlProduct($res["product"]['asin'], $res["product"]["id_amazon"]);
@@ -65,33 +65,34 @@ class GpGetProductController
             $client = new Client();
             $crawler = $client->request("GET", $res["product"]['linkproduct']);
 
-            // $res["product"]["crawler"] = $crawler->filter('#dp-container')->count();
 
 
 
+            if ($crawler->filter('#productTitle')->count() > 0) {
+                $res["title"] = $crawler->filter('#productTitle')->text();
+                $res["product"]["title"] = $res["title"];
+                $res["product"]["image"][] = $crawler->filter('#imgTagWrapperId > img')->attr("src");
+                // $res["product"]["image"][] = $crawler->filter('#imgTagWrapperId > img')->attr("src");
+                // $res["product"]["image"][] = $crawler->filter('#imgTagWrapperId > img')->attr("src");
+                $res["product"]["price"] = $crawler->filter('.a-text-price')->text();
+                $this->SaveCreateAmazonProduct($res);
+                $res["ok"] = "ok saved..";
+                return  json_encode($res);
+            }
 
 
-            $res["title"] = $crawler->filter('#productTitle')->text();
-            $res["product"]["title"] = $res["title"];
-            $res["product"]["image"][] = $crawler->filter('#imgTagWrapperId > img')->attr("src");
-            // $res["product"]["image"][] = $crawler->filter('#imgTagWrapperId > img')->attr("src");
-            // $res["product"]["image"][] = $crawler->filter('#imgTagWrapperId > img')->attr("src");
-            $res["product"]["price"] = $crawler->filter('.a-text-price')->text();
-
-            $this->SaveCreateAmazonProduct($res);
-
-            return json_encode("ok");
+            
+            return json_encode($res["info"] = "There is some problem. Try again later.");
         } catch (Exception $e) {
-            $res['error'] = $e->getMessage();
-            return json_encode($res);
+            return json_encode($res['error'] = $e->getMessage());
         }
     }
 
-    public function GpGetAmazonAfiliate($amazonafiliate = 52)
+    public function GpGetAmazonAfiliate()
     {
         global $wpdb;
 
-        $query = "SELECT * FROM {$wpdb->prefix}amazonid WHERE id = {$amazonafiliate}";
+        $query = "SELECT * FROM {$wpdb->prefix}amazonid ORDER BY id DESC limit 1";
         return $wpdb->get_results($query,  ARRAY_A)[0]["amazonid"];
     }
 
@@ -128,7 +129,7 @@ class GpGetProductController
     public function GpgetProducts()
     {
         global $wpdb;
-        $query = "SELECT * FROM {$wpdb->prefix}getproduct";
+        $query = "SELECT * FROM {$wpdb->prefix}getproduct ORDER BY id DESC ";
         $result = $wpdb->get_results($query,  ARRAY_A);
 
         foreach ($result as $k => $v) {
