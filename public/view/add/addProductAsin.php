@@ -14,44 +14,49 @@
                         <div class="col-12">
                             <div class="input-group input-group-sm ">
                                 <span class="input-group-text">ASIN</span>
-                                <input type="text" class="form-control form-control-sm"  name="asin" value="B0C2KFVGVR"   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" required>
+                                <input type="text" class="form-control form-control-sm" name="asin" value="B0C2KFVGVR" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" required>
                             </div>
                         </div>
 
-                        <?php  $compo->buttonSend("Crear Product", "btnSendProductAsin");  ?>
+                        <?php $compo->buttonSend("Crear Product", "btnSendProductAsin");  ?>
 
                     </form>
 
 
                 </div>
+                <div id="result_a" class="m-auto p-3"></div>
             </div>
         </div>
     </div>
 
     <script>
-jQuery(document).ready(($)=>{
+        jQuery(document).ready(($) => {
 
-    $("#btnSendProductAsin").on("click", (e) => {
-            e.preventDefault();
-            $.ajax({
-                method: "POST",
-                url: PetitionAjax.url,
-                data: {
-                    action: "save_data_create_product_asin",
-                    nonce: PetitionAjax.security,
-                    data: $("#formCreateProductAsin").serialize(),
-                }
+            $("#btnSendProductAsin").on("click", (e) => {
+                e.preventDefault();
+                $.ajax({
+                    method: "POST",
+                    url: PetitionAjax.url,
+                    data: {
+                        action: "save_data_create_product_asin",
+                        nonce: PetitionAjax.security,
+                        data: $("#formCreateProductAsin").serialize(),
+                    }
 
-            }).done((response) => {
-                // response = response.substring(0, response.length - 1);
-                // response = JSON.parse(response);
-                // console.log(response)
-                location.reload()
+                }).done((response) => {
+                    response = response.substring(0, response.length - 1);
+                    response = JSON.parse(response);
+                    if (response.content) {
+                        console.log(response)
+                        $("#result_a").html(response.content)
+                    } else {
+                        $("#result_a").html('')
+                        location.reload()
+                    }
+                })
+
             })
 
+
         })
-
-
-})
-
     </script>

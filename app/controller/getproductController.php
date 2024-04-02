@@ -2,9 +2,13 @@
 
 
 require_once plugin_dir_path(__DIR__) . "model/adminModel.php";
-include_once __DIR__ . '/../../vendor/autoload.php';
+
+if (file_exists(plugin_dir_path(__DIR__) . "../vendor/autoload.php")) {
+    include_once plugin_dir_path(__DIR__) . '../vendor/autoload.php';
+}
 
 use Goutte\Client;
+
 
 
 class GpGetProductController
@@ -44,24 +48,27 @@ class GpGetProductController
 
     public function SaveCreateAmazonProductAsin()
     {
-
-        parse_str($_POST["data"], $tr);
-        $_POST["data"] = $tr;
-        $asin = $_POST["data"]["asin"];
-
-        $res = [];
-        $res["product"]["id_amazon"] = $this->GpGetAmazonAfiliate();
-        $res["product"]['asin'] = $asin;
-        $res["product"]['linkproduct'] = $this->getUrlProduct($res["product"]['asin'], $res["product"]["id_amazon"]);
-
-        $client = new Client();
-        $crawler = $client->request("GET", $res["product"]['linkproduct']);
-
-        // $res["product"]["crawler"] = $crawler->filter('#dp-container')->count();
-
-
+        if (!file_exists(plugin_dir_path(__DIR__)  . "../vendor/autoload.php")) {
+            return json_encode(["content" =>  "eject dependencias [composer install] and will try again."]);
+        }
 
         try {
+            parse_str($_POST["data"], $tr);
+            $_POST["data"] = $tr;
+            $asin = $_POST["data"]["asin"];
+
+            $res = [];
+            $res["product"]["id_amazon"] = $this->GpGetAmazonAfiliate();
+            $res["product"]['asin'] = $asin;
+            $res["product"]['linkproduct'] = $this->getUrlProduct($res["product"]['asin'], $res["product"]["id_amazon"]);
+
+            $client = new Client();
+            $crawler = $client->request("GET", $res["product"]['linkproduct']);
+
+            // $res["product"]["crawler"] = $crawler->filter('#dp-container')->count();
+
+
+
 
 
             $res["title"] = $crawler->filter('#productTitle')->text();
@@ -73,7 +80,7 @@ class GpGetProductController
 
             $this->SaveCreateAmazonProduct($res);
 
-            return;
+            return json_encode("ok");
         } catch (Exception $e) {
             $res['error'] = $e->getMessage();
             return json_encode($res);
