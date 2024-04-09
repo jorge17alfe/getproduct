@@ -1,5 +1,5 @@
 "# getproduct" 
-1.  Add file function of your theme the next code:
+1.  Add in your theme file functions.php the next code for add bootstrap:
 
 //registe bootstrap for principal view
 function GpViewRegisterBootstrapCSS($hook)
