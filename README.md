@@ -1,4 +1,8 @@
 "# getproduct" 
+
+Copy file "bootstrap-5.2.3-dist" in  "../public/assets/bootstrap-5.2.3-dist"  to theme choose in dir "/assets/<bootstrap-5.2.3-dist>"
+
+
 1.  Add in your theme file functions.php the next code for add bootstrap:
 
 //registe bootstrap for principal view
