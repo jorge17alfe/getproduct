@@ -6,7 +6,7 @@ class AdminModel
     {
        
         global $wpdb;
-        $table1 = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}getproduct(
+        $table1 = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}gpgetproduct(
             `id` INT NOT NULL AUTO_INCREMENT,
             `title` TEXT NULL,
             `product` TEXT NULL,
@@ -17,9 +17,9 @@ class AdminModel
 
 
         global $wpdb;
-        $table2 = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}amazonid(
+        $table2 = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}gpstore(
             `id` INT AUTO_INCREMENT NOT NULL,
-            `amazonid` VARCHAR(100) NULL,
+            `storeid` VARCHAR(100) NULL,
             PRIMARY KEY (`id`));
             ";
 

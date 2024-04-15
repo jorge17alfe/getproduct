@@ -68,35 +68,38 @@ add_action('admin_enqueue_scripts', 'GpRegisterJsGeneratePage');
 
 
 //  data  AMAZONIDS
+require_once "app/controller/storeController.php";
+$storeController =   new GpStoreController;
 
-function GpgetAmazonIds()
+
+function GpgetStoreIds()
 {
-    global $adminController;
-    echo $adminController->GetAmazonIds();
+    global $storeController;
+    echo $storeController->GetStoreIds();
 }
 
-add_action('wp_ajax_nopriv_get_data_amazon_ids', 'GpGetAmazonIds');
-add_action('wp_ajax_get_data_amazon_ids', 'GpGetAmazonIds');
+add_action('wp_ajax_nopriv_get_data_store_ids', 'GpGetStoreIds');
+add_action('wp_ajax_get_data_store_ids', 'GpGetStoreIds');
 
-function GpDeleteAmazonId()
+function GpDeleteStoreId()
 {
-    global $adminController;
-    echo $adminController->DeleteDataAmazonId();
+    global $storeController;
+    echo $storeController->DeleteDataStoreId();
 }
 
-add_action('wp_ajax_nopriv_delete_data_amazon_id', 'GpDeleteAmazonId');
-add_action('wp_ajax_delete_data_amazon_id', 'GpDeleteAmazonId');
+add_action('wp_ajax_nopriv_delete_data_store_id', 'GpDeleteStoreId');
+add_action('wp_ajax_delete_data_store_id', 'GpDeleteStoreId');
 
 
 
-function GpSaveAmazonId()
+function GpSaveStoreId()
 {
-    global $adminController;
-    echo $adminController->SaveDataAmazonId();
+    global $storeController;
+    echo $storeController->SaveDataStoreId();
 }
 
-add_action('wp_ajax_nopriv_save_data_amazon_id', 'GpSaveAmazonId');
-add_action('wp_ajax_save_data_amazon_id', 'GpSaveAmazonId');
+add_action('wp_ajax_nopriv_save_data_store_id', 'GpSaveStoreId');
+add_action('wp_ajax_save_data_store_id', 'GpSaveStoreId');
 
 
 
@@ -114,27 +117,27 @@ function GpgetProducts()
 add_action('wp_ajax_nopriv_get_data_products', 'GpGetProducts');
 add_action('wp_ajax_get_data_products', 'GpGetProducts');
 
-function SaveCreateAmazonProduct()
+function GpSaveCreateStoreProduct()
 {
 
     global $getProductController ;
-    echo  $getProductController->SaveCreateAmazonProduct();
+    echo  $getProductController->SaveCreateStoreProduct();
    
 }
 
-add_action('wp_ajax_nopriv_save_create_amazon_product', 'SaveCreateAmazonProduct');
-add_action('wp_ajax_save_create_amazon_product', 'SaveCreateAmazonProduct');
+add_action('wp_ajax_nopriv_save_create_store_product', 'GpSaveCreateStoreProduct');
+add_action('wp_ajax_save_create_store_product', 'GpSaveCreateStoreProduct');
 
-function SaveCreateAmazonProductAsin()
+function GpSaveCreateStoreProductAsin()
 {
 
     global $getProductController ;
-    echo  $getProductController->SaveCreateAmazonProductAsin();
+    echo  $getProductController->SaveCreateStoreProductAsin();
    
 }
 
-add_action('wp_ajax_nopriv_save_data_create_product_asin', 'SaveCreateAmazonProductAsin');
-add_action('wp_ajax_save_data_create_product_asin', 'SaveCreateAmazonProductAsin');
+add_action('wp_ajax_nopriv_save_data_create_product_asin', 'GpSaveCreateStoreProductAsin');
+add_action('wp_ajax_save_data_create_product_asin', 'GpSaveCreateStoreProductAsin');
 
 
 function GpDeleteProduct(){

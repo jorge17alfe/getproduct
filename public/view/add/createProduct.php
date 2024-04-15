@@ -4,25 +4,30 @@
             <h3></h3>
         </div>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Create Product for ASIN
-        </button>
+        <!-- <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            AutoCreate Product for ASIN
+        </button> -->
     </div>
     <form class=" row g-2  my-3 " id="formCreateProduct" novalidate>
-        
+        <div class="col-12">
+            <select class="form-select" name="product[storename]" id="storeid" aria-label="Default select example">
+                <option selected>Add button Store</option>
+            </select>
+        </div>
+
         <?php $compo->inputCreate("ASIN", '', "product[asin]", "asin", "");  ?>
-       
+
         <?php $compo->inputCreate("Title", '', "product[title]", "title", "");  ?>
-       
-        <?php $compo->inputCreate("Sub", '', "product[subtitle]", "subtitle", "");  ?>
-       
+
+        <?php $compo->inputCreate("Sub-title", '', "product[subtitle]", "subtitle", "");  ?>
+
         <?php $compo->inputCreate("Price", '', "product[price]", "price", "");  ?>
-       
-        <?php $compo->inputCreate("Link Product" , '', "product[linkproduct]", "linkproduct", "");  ?>
-       
+
+        <?php $compo->inputCreate("Link Product", '', "product[linkproduct]", "linkproduct", "");  ?>
+
         <div class="col-12">
             <div class="input-group input-group-sm ">
-                <span class="input-group-text">Links Images: </span>
+                <span class="input-group-text">Links Images </span>
 
                 <button class="btn btn-success add-link-image"><i class="bi bi-plus-square "></i></button>
             </div>
@@ -39,7 +44,7 @@
 
 
     <?php
-    include_once "addProductAsin.php";
+    // include_once "addProductAsin.php";
     ?>
 
 
@@ -57,7 +62,16 @@
         return append;
     }
 
+    for (let i = 0; i < stores.length; i++) {
+        jQuery(document).ready(($) => {
+            $("#storeid").append(`<option  id ="example${stores[i]["id"]}" value="${stores[i]["id"]}">${stores[i]["storeid"]}</option> `)
+        })
+    }
+    console.log(stores)
+
     jQuery(document).ready(($) => {
+
+
         $(".add-link-image").on("click", e => {
 
             e.preventDefault()
@@ -85,7 +99,7 @@
                 method: "POST",
                 url: url,
                 data: {
-                    action: "save_create_amazon_product",
+                    action: "save_create_store_product",
                     nonce: PetitionAjax.security,
                     data: $("#formCreateProduct").serialize(),
                 }
@@ -95,7 +109,7 @@
                 // response = JSON.parse(response);
                 // console.log(response)
                 location.reload()
-                // $("#result").html('');
+                // // $("#result").html('');
 
             })
 

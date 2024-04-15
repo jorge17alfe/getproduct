@@ -9,78 +9,82 @@
 
     </div> 
 
-    <form class=" row g-2  my-3" id="formData" novalidate>
+    <form class=" row g-2  my-3" id="formDataStore" novalidate>
         <input type="hidden" class="form-control form-control-sm" value="<?= get_current_user_id() ?>" id="userId" name="userId" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 
         <div class="d-flex justify-content-center col-12 ">
-            <button class=" btn btn-success" id="addbtnamazon">
-                Add Amazon ID
+            <button class=" btn btn-success" id="addbtnstore">
+                Add Store ID
             </button>
         </div>
-        <div class="" id="result-amazonid">
+        <div class="" id="result-storeid">
 
         </div>
 
         
-        <?php $compo->buttonSend( "Save" , "btnSend" );  ?>
+        <?php $compo->buttonSend( "Save" , "btnSendStore" );  ?>
     </form>
 </div>
 
 <script>
+   
     jQuery(document).ready(($) => {
         let url = PetitionAjax.url;
-        $("#addbtnamazon").on("click", (e) => {
+        $("#addbtnstore").on("click", (e) => {
             e.preventDefault();
-            $("#result-amazonid").append(addelementamazonid(""));
+            $("#result-storeid").append(addelementstoreid(""));
 
         })
 
 
-        $("#btnSend").on("click", (e) => {
+        $("#btnSendStore").on("click", (e) => {
             e.preventDefault();
 
             $.ajax({
                 method: "POST",
                 url: url,
                 data: {
-                    action: "save_data_amazon_id",
+                    action: "save_data_store_id",
                     nonce: PetitionAjax.security,
-                    data: $("#formData").serialize(),
+                    data: $("#formDataStore").serialize(),
                 }
 
             }).done((response) => {
-                // response = response.substring(0, response.length - 1);
-                // response = JSON.parse(response);
+                response = response.substring(0, response.length - 1);
+                response = JSON.parse(response);
                 // console.log(response)
 
-                $("#result-amazonid").html('');
-                GetAmazonIds();
+                // $("#result-storeid").html('');
+                // GetstoreIds();
+                location.reload()
             })
 
         })
 
-        const GetAmazonIds = () => {
+        const GetstoreIds = () => {
 
             $.get({
                 url,
                 data: {
-                    action: "get_data_amazon_ids",
+                    action: "get_data_store_ids",
                     nonce: PetitionAjax.security,
                 }
             }).done(response => {
                 response = response.substring(0, response.length - 1);
                 response = JSON.parse(response);
-                console.log(response)
+                // console.log(response)
+                stores = response;
+                
                 for (let i = 0; i < response.length; i++) {
-                    $("#result-amazonid").append(addelementamazonid("disabled", response[i]["id"], response[i]["amazonid"]));
+                    $("#result-storeid").append(addelementstoreid("disabled", response[i]["id"], response[i]["storeid"]));
                 }
 
             })
         }
-        GetAmazonIds();
+        GetstoreIds();
 
-        $(document).on("click", ".trash-amazonid", () => {
-            deleteRow("delete-amazonid", "delete_data_amazon_id", ".delete-item-amazonid")
+        $(document).on("click", ".trash-storeid", () => {
+            deleteRow("delete-storeid", "delete_data_store_id", ".delete-item-storeid")
         })
 
 
@@ -102,15 +106,15 @@
         })
     }
 
-    function addelementamazonid(disabled, id = '', value = "", ) {
+    function addelementstoreid(disabled, id = '', value = "", ) {
         var add = '';
         if (id.length > 0) add = `<${id}>`
-        let result = `<div class='input-group input-group-sm  mb-1 delete-item-amazonid${id}'  >`;
+        let result = `<div class='input-group input-group-sm  mb-1 delete-item-storeid${id}'  >`;
 
-        result += `<span class='input-group-text'>Amazon ID ${add}</span>`;
-        result += `<input ${disabled} type='text' class='form-control form-control-sm' placeholder='Your id amazon' id='${id}' name='amazonid[${id}]' value='${value}'  aria-label='Sizing example input' aria-describedby='inputGroup-sizing-sm'>`;
+        result += `<span class='input-group-text'>Store ID ${add}</span>`;
+        result += `<input ${disabled} type='text' class='form-control form-control-sm' placeholder='Your id store' id='${id}' name='storeid[${id}]' value='${value}'  aria-label='Sizing example input' aria-describedby='inputGroup-sizing-sm'>`;
         result += `<a href="javascript:void(0)" onclick='update(${id})' class="btn btn-outline-success ms-1 lock-unlock${id} rounded"><i class="bi bi-lock"></i></a>`;
-        result += `<a href="javascript:void(0)" class="btn btn-outline-danger ms-1 trash-amazonid rounded" delete-amazonid='${id}'><i class="bi bi-trash " ></i></a>`;
+        result += `<a href="javascript:void(0)" class="btn btn-outline-danger ms-1 trash-storeid rounded" delete-storeid='${id}'><i class="bi bi-trash " ></i></a>`;
 
         result += `</div>`;
         return result;
