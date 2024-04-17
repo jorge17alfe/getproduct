@@ -6,6 +6,7 @@ Copy file "bootstrap-5.2.3-dist" in  "../public/assets/bootstrap-5.2.3-dist"  to
 1.  Add in your theme file functions.php the next code for add bootstrap:
 
 //registe bootstrap for principal view
+
 function GpViewRegisterBootstrapCSS($hook)
 {
     wp_enqueue_style('bootstrapCss', get_template_directory_uri() .'/assets/bootstrap-5.2.3-dist/css/bootstrap.min.css');
